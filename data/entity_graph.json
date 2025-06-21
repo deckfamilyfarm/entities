@@ -14,6 +14,10 @@
   ],
   "relationships": [
     {
+      "to": "hyland_processing",
+      "from": "wholesale"
+    },
+    {
       "from": "hyland_processing",
       "to": "wholesale"
     },
