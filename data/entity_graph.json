@@ -1,0 +1,57 @@
+{
+  "entities": [
+    "wholesale",
+    "farmers_market",
+    "ffcsa",
+    "hyland_processing",
+    "layers",
+    "poultry",
+    "grazers",
+    "pork",
+    "creamy_cow",
+    "garden",
+    "olympia_provisions"
+  ],
+  "relationships": [
+    {
+      "from": "hyland_processing",
+      "to": "wholesale"
+    },
+    {
+      "from": "layers",
+      "to": "wholesale"
+    },
+    {
+      "from": "poultry",
+      "to": "wholesale"
+    },
+    {
+      "from": "grazers",
+      "to": "wholesale"
+    },
+    {
+      "from": "pork",
+      "to": "wholesale"
+    },
+    {
+      "from": "wholesale",
+      "to": "farmers_market"
+    },
+    {
+      "from": "wholesale",
+      "to": "ffcsa"
+    },
+    {
+      "from": "pork",
+      "to": "olympia_provisions"
+    },
+    {
+      "from": "creamy_cow",
+      "to": "ffcsa"
+    },
+    {
+      "from": "garden",
+      "to": "ffcsa"
+    }
+  ]
+}
