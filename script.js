@@ -1,91 +1,103 @@
-	const data = embeddedData;
+const data = embeddedData;
 
-    const entities = data.entities;
-    const relationships = data.relationships;
+const entities = data.entities;
+const relationships = data.relationships;
 
-    const elements = [];
+const elements = [];
 
-    const positions = {
-      // Tiered manual layout (production → processing → sales)
-      production: ["hyland_processing", "layers", "poultry", "grazers", "pork", "creamy_cow", "garden"],
-      processing: ["wholesale"],
-      sales: ["farmers_market", "ffcsa"]
-    };
+// Final layout with 3 tiers:
+// Y = 0   → customers (top)
+// Y = 100 → sales (middle)
+// Y = 250 → processing + production (bottom)
+const nodePositions = {
+  // Top: Customers
+  olympia_provisions:        { x: -300, y: 0 },
+  wholesale_customers:       { x: -100, y: 0 },  // between olympia and FM customers
+  farmers_market_customers:  { x: 100, y: 0 },
+  csa_members:               { x: 300, y: 0 },
 
-    // Y-levels for layout
-    const yLevels = {
-      production: 400,
-      processing: 250,
-      sales: 100
-    };
+  // Middle: Sales (shifted right)
+  wholesale:          { x: -100, y: 100 },
+  farmers_market:     { x: 100,  y: 100 },
+  ffcsa:              { x: 300,  y: 100 },
 
-    let xOffset = 0;
-    const step = 150;
+  // Bottom: Combined Processing + Production
+  pork:               { x: -300, y: 250 },
+  hyland_processing:  { x: -150, y: 250 },
+  layers:             { x: 0,    y: 250 },
+  poultry:            { x: 150,  y: 250 },
+  grazers:            { x: 300,  y: 250 },
+  creamy_cow:         { x: 450,  y: 250 },
+  garden:             { x: 600,  y: 250 }
+};
 
-    for (const [tier, nodes] of Object.entries(positions)) {
-      let y = yLevels[tier];
-      xOffset = 0;
-      for (const node of nodes) {
-        elements.push({
-          data: { id: node, label: node.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()) },
-          position: { x: xOffset, y: y }
-        });
-        xOffset += step;
-      }
-    }
+// Add positioned nodes
+for (const [id, position] of Object.entries(nodePositions)) {
+  elements.push({
+    data: {
+      id,
+      label: id.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())
+    },
+    position
+  });
+}
 
-    // Handle any extra entities not in layout
-    const placed = new Set(Object.values(positions).flat());
-    for (const entity of entities) {
-      if (!placed.has(entity)) {
-        elements.push({
-          data: { id: entity, label: entity.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()) }
-        });
-      }
-    }
-
-    // Edges
-    relationships.forEach(rel => {
-      elements.push({
-        data: {
-          id: `${rel.from}_${rel.to}`,
-          source: rel.from,
-          target: rel.to
-        }
-      });
-    });
-
-    cytoscape({
-      container: document.getElementById('cy'),
-      elements,
-      style: [
-        {
-          selector: 'node',
-          style: {
-            'background-color': '#2E86AB',
-            'label': 'data(label)',
-            'color': '#fff',
-            'text-valign': 'center',
-            'text-halign': 'center',
-            'font-size': 12,
-            'shape': 'roundrectangle',
-            'width': 'label',
-            'padding': '10px'
-          }
-        },
-        {
-          selector: 'edge',
-          style: {
-            'width': 2,
-            'line-color': '#aaa',
-            'target-arrow-color': '#aaa',
-            'target-arrow-shape': 'triangle',
-            'curve-style': 'bezier'
-          }
-        }
-      ],
-      layout: {
-        name: 'preset' // Use the manual positioning
+// Handle any extra entities not placed manually
+const placed = new Set(Object.keys(nodePositions));
+for (const entity of entities) {
+  if (!placed.has(entity)) {
+    elements.push({
+      data: {
+        id: entity,
+        label: entity.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())
       }
     });
+  }
+}
+
+// Add edges
+relationships.forEach(rel => {
+  elements.push({
+    data: {
+      id: `${rel.from}_${rel.to}`,
+      source: rel.from,
+      target: rel.to
+    }
+  });
+});
+
+// Initialize Cytoscape
+cytoscape({
+  container: document.getElementById('cy'),
+  elements,
+  style: [
+    {
+      selector: 'node',
+      style: {
+        'background-color': '#2E86AB',
+        'label': 'data(label)',
+        'color': '#fff',
+        'text-valign': 'center',
+        'text-halign': 'center',
+        'font-size': 12,
+        'shape': 'roundrectangle',
+        'width': 'label',
+        'padding': '10px'
+      }
+    },
+    {
+      selector: 'edge',
+      style: {
+        'width': 2,
+        'line-color': '#aaa',
+        'target-arrow-color': '#aaa',
+        'target-arrow-shape': 'triangle',
+        'curve-style': 'bezier'
+      }
+    }
+  ],
+  layout: {
+    name: 'preset'
+  }
+});
 
