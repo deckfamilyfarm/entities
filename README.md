@@ -13,9 +13,16 @@ This repository is the canonical source for visualizing our business ecosystem â
 
 ---
 ## ðŸ“Œ How to Run
-There is a script to package up the output and create a single `entities.html` file to run in the killdeer github pages environment:
+There is a script to package up the output and create a single `entities.html` file to run in the killdeer github pages environment.
+You will need to commit this file under killdeer separately after running the script
+
 ```
 node build-entities-html.js
+cd ../killdeer
+git pull
+git add docs/entities.html
+git commit -m "updated entities diagram"
+git push
 ```
 
 ---
