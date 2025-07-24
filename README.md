@@ -4,6 +4,7 @@ This repository is the canonical source for visualizing our business ecosystem â
 
 ---
 
+
 ## ðŸ“Œ Purpose
 
 - To document and maintain a clear visual map of our business entities and relationships.
@@ -11,7 +12,13 @@ This repository is the canonical source for visualizing our business ecosystem â
 - To evolve from a **hand-drawn conceptual sketch** to a **maintainable, version-controlled visualization system**.
 
 ---
+## ðŸ“Œ How to Run
+There is a script to package up the output and create a single `entities.html` file to run in the killdeer github pages environment:
+```
+node build-entities-html.js
+```
 
+---
 ## ðŸ“‚ Structure
 
 ```

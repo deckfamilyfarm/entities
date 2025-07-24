@@ -1,6 +1,5 @@
-fetch('data/entity_graph.json')
-  .then(response => response.json())
-  .then(data => {
+	const data = embeddedData;
+
     const entities = data.entities;
     const relationships = data.relationships;
 
@@ -89,5 +88,4 @@ fetch('data/entity_graph.json')
         name: 'preset' // Use the manual positioning
       }
     });
-  });
 
