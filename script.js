@@ -5,30 +5,32 @@ const relationships = data.relationships;
 
 const elements = [];
 
-// Final layout with 3 tiers:
-// Y = 0   → customers (top)
-// Y = 100 → sales (middle)
-// Y = 250 → processing + production (bottom)
+// Y positions
+const yTop = 0;
+const yMiddle = 200;
+const yBottom = 400;
+
+// X positions (equal spacing for all rows)
 const nodePositions = {
-  // Top: Customers
-  olympia_provisions:        { x: -300, y: 0 },
-  wholesale_customers:       { x: -100, y: 0 },  // between olympia and FM customers
-  farmers_market_customers:  { x: 100, y: 0 },
-  csa_members:               { x: 300, y: 0 },
+  // Top: Customers (wide spacing)
+  olympia_provisions:        { x: -500, y: yTop },
+  farmers_market_customers:  { x: -200, y: yTop },
+  wholesale_customers:       { x: 200,  y: yTop },
+  csa_members:               { x: 500,  y: yTop },
 
-  // Middle: Sales (shifted right)
-  wholesale:          { x: -100, y: 100 },
-  farmers_market:     { x: 100,  y: 100 },
-  ffcsa:              { x: 300,  y: 100 },
+  // Middle: Sales (now spaced out more)
+  farmers_market:            { x: -300, y: yMiddle },
+  wholesale:                 { x: 0,    y: yMiddle },
+  ffcsa:                     { x: 300,  y: yMiddle },
 
-  // Bottom: Combined Processing + Production
-  pork:               { x: -300, y: 250 },
-  hyland_processing:  { x: -150, y: 250 },
-  layers:             { x: 0,    y: 250 },
-  poultry:            { x: 150,  y: 250 },
-  grazers:            { x: 300,  y: 250 },
-  creamy_cow:         { x: 450,  y: 250 },
-  garden:             { x: 600,  y: 250 }
+  // Bottom: Production + Processing (already wide)
+  pork:               { x: -500, y: yBottom },
+  hyland_processing:  { x: -300, y: yBottom },
+  layers:             { x: -100, y: yBottom },
+  poultry:            { x: 100,  y: yBottom },
+  grazers:            { x: 300,  y: yBottom },
+  creamy_cow:         { x: 500,  y: yBottom },
+  garden:             { x: 700,  y: yBottom }
 };
 
 // Add positioned nodes
@@ -42,7 +44,7 @@ for (const [id, position] of Object.entries(nodePositions)) {
   });
 }
 
-// Handle any extra entities not placed manually
+// Add any unplaced entities
 const placed = new Set(Object.keys(nodePositions));
 for (const entity of entities) {
   if (!placed.has(entity)) {
@@ -67,37 +69,55 @@ relationships.forEach(rel => {
 });
 
 // Initialize Cytoscape
-cytoscape({
+const cy = cytoscape({
   container: document.getElementById('cy'),
   elements,
-  style: [
-    {
-      selector: 'node',
-      style: {
-        'background-color': '#2E86AB',
-        'label': 'data(label)',
-        'color': '#fff',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'font-size': 12,
-        'shape': 'roundrectangle',
-        'width': 'label',
-        'padding': '10px'
-      }
-    },
-    {
-      selector: 'edge',
-      style: {
-        'width': 2,
-        'line-color': '#aaa',
-        'target-arrow-color': '#aaa',
-        'target-arrow-shape': 'triangle',
-        'curve-style': 'bezier'
-      }
+
+style: [
+  {
+    selector: 'node',
+    style: {
+      'background-color': '#2E86AB',
+      'label': 'data(label)',
+      'color': '#fff',
+      'text-valign': 'center',
+      'text-halign': 'center',
+      'font-size': '20px',
+      'shape': 'roundrectangle',
+      'text-wrap': 'wrap',
+      'text-max-width': '140px',
+      'padding': '15px',
+      'width': '140px',
+      'height': '60px'
     }
-  ],
+  },
+  {
+    selector: 'edge',
+    style: {
+      'width': 3,
+      'line-color': '#888',
+      'target-arrow-color': '#888',
+      'target-arrow-shape': 'triangle',
+      'arrow-scale': 1.5,
+      'curve-style': 'bezier'
+    }
+  }
+],
+
+
   layout: {
     name: 'preset'
-  }
+  },
+  userZoomingEnabled: true,
+  userPanningEnabled: true,
+  wheelSensitivity: 0.2
+});
+
+// Fit nicely to screen
+cy.ready(() => {
+  const fitGraph = () => cy.fit(null, 80);
+
+  fitGraph(); // Initial fit
+  window.addEventListener('resize', fitGraph);
 });
 
