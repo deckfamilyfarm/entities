@@ -24,7 +24,7 @@
     { "from": "pork", "to": "wholesale" },
     { "from": "wholesale", "to": "farmers_market" },
     { "from": "wholesale", "to": "ffcsa" },
-    { "from": "pork", "to": "olympia_provisions" },
+    { "from": "pork", "to": "olympia_provisions", "percentage": "20", "note": "whole hogs" },
     { "from": "creamy_cow", "to": "ffcsa" },
     { "from": "garden", "to": "ffcsa" },
  	{ "from": "farmers_market", "to": "farmers_market_customers" },
