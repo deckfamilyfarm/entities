@@ -16,7 +16,7 @@ const nodePositions = {
   olympia_provisions:        { x: -500, y: yTop },
   farmers_market_customers:  { x: -200, y: yTop },
   wholesale_customers:       { x: 200,  y: yTop },
-  csa_members:               { x: 500,  y: yTop },
+  ffcsa_members:               { x: 500,  y: yTop },
 
   // Middle: Sales (now spaced out more)
   farmers_market:            { x: -300, y: yMiddle },
@@ -27,7 +27,7 @@ const nodePositions = {
   pork:               { x: -500, y: yBottom },
   hyland_processing:  { x: -300, y: yBottom },
   layers:             { x: -100, y: yBottom },
-  poultry:            { x: 100,  y: yBottom },
+  roasters:           { x: 100,  y: yBottom },
   grazers:            { x: 300,  y: yBottom },
   creamy_cow:         { x: 500,  y: yBottom },
   garden:             { x: 700,  y: yBottom }

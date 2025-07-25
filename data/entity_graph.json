@@ -5,21 +5,21 @@
     "ffcsa",
     "hyland_processing",
     "layers",
-    "poultry",
+    "roasters",
     "grazers",
     "pork",
     "creamy_cow",
     "garden",
     "olympia_provisions",
     "farmers_market_customers",
-    "csa_members",
+    "ffcsa_members",
     "wholesale_customers"	
   ],
   "relationships": [
     { "to": "hyland_processing", "from": "wholesale" },
     { "from": "hyland_processing", "to": "wholesale" },
     { "from": "layers", "to": "wholesale" },
-    { "from": "poultry", "to": "wholesale" },
+    { "from": "roasters", "to": "wholesale" },
     { "from": "grazers", "to": "wholesale" },
     { "from": "pork", "to": "wholesale" },
     { "from": "wholesale", "to": "farmers_market" },
@@ -28,7 +28,7 @@
     { "from": "creamy_cow", "to": "ffcsa" },
     { "from": "garden", "to": "ffcsa" },
  	{ "from": "farmers_market", "to": "farmers_market_customers" },
-    { "from": "ffcsa", "to": "csa_members" },
+    { "from": "ffcsa", "to": "ffcsa_members" },
     { "from": "wholesale", "to": "wholesale_customers" }
   ]
 }
